@@ -23,6 +23,10 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@beneatspineapple/lib-date": "file:src/js/lib-date",
+    "@beneatspineapple/lib-google-maps": "file:src/js/lib-google-maps",
+    "@beneatspineapple/lib-weather": "file:src/js/lib-weather",
+    "@beneatspineapple/lib-http": "file:src/js/lib-http",
     "babel-loader": "^8.2.5",
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",

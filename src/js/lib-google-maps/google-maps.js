@@ -1,5 +1,5 @@
 // Utility functions that work with google geocode api
-
+import formatQueryString from "../lib-http/http.js";
 
 //const regeneratorRuntime = require("regenerator-runtime");
 
@@ -7,17 +7,34 @@
 const apiKey = "AIzaSyBE9gS_ulRNi1TNaiv1OzwfgHe8I8UYsq8";
 
 // url pattern for api call
-const geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json?region=us&address=";
+const geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
+
+
 
 // returns a promise of api data - see sample data above
 export default async function(zipcode) {
    console.log("Zipcode being converted: " + zipcode);
-    let response = await fetch(`${geocodeUrl}${zipcode}&key=${apiKey}`);
-    
-    if (!response.ok)
-        throw new Error(`API call failed. ${response.status}`);
-    else 
-        return await response.json();
+   let params = {
+      region: "us",
+      address: zipcode,
+      key: apiKey
+   };
+
+
+    let response = await fetch(geocodeUrl + "?" + formatQueryString(params));
+    let data = await response.json();
+    if(!response.ok) {
+        throw new Error("API call failed.");
+    }
+    else if(response.ok) {
+      if(data.results.length < 1 && data.error_message != null) {
+         throw new Error(data.error_message);
+      }
+      else if(data.results.length < 1) {
+         throw new Error("No coordinates found for the requested zipcode.");
+      }
+      return data;
+   }
 }
 
 // sample api call
