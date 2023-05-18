@@ -1,26 +1,41 @@
 // Utility functions that work with google geocode api
-import formatQueryString from "../lib-http/http.js";
+import formatQueryString from "../../lib-http/src/http.js";
 
 //const regeneratorRuntime = require("regenerator-runtime");
 
-// my api key - replace this with yours!
-const apiKey = "AIzaSyBE9gS_ulRNi1TNaiv1OzwfgHe8I8UYsq8";
+// // my api key - replace this with yours!
+// const apiKey = "AIzaSyBE9gS_ulRNi1TNaiv1OzwfgHe8I8UYsq8";
 
-// url pattern for api call
-const geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
+// // url pattern for api call
+// const geocodeUrl = "https://maps.googleapis.com/maps/api/geocode/json";
 
-
+const geocodeUrl = process.env.GEOCODE_URL;
+const apiKey = process.env.GEOCODE_API_KEY;
 
 // returns a promise of api data - see sample data above
 export default async function(zipcode) {
-   console.log("Zipcode being converted: " + zipcode);
-   let params = {
-      region: "us",
-      address: zipcode,
-      key: apiKey
-   };
+   // console.log("Zipcode being converted: " + zipcode);
+   let params = {};
+   if(isNaN(zipcode)) {
+      params = {
+         address: zipcode,
+         components: "US",
+         key: apiKey
+      }
+   } else {
+      params = {
+         region: "us",
+         address: zipcode,
+         key: apiKey
+      };
+    }
+   // let params = {
+   //    region: "us",
+   //    address: zipcode,
+   //    key: apiKey
+   // };
 
-
+   console.log(geocodeUrl + "?" + formatQueryString(params));
     let response = await fetch(geocodeUrl + "?" + formatQueryString(params));
     let data = await response.json();
     if(!response.ok) {
@@ -36,6 +51,8 @@ export default async function(zipcode) {
       return data;
    }
 }
+//https://maps.googleapis.com/maps/api/geocode/json?region=us&address=97401&key=AIzaSyBE9gS_ulRNi1TNaiv1OzwfgHe8I8UYsq8
+//https://maps.googleapis.com/maps/api/geocode/json?address=Glide,OR&components=country:US&key=AIzaSyBE9gS_ulRNi1TNaiv1OzwfgHe8I8UYsq8
 
 // sample api call
 // https://maps.googleapis.com/maps/api/geocode/json?address=97405&region=us&key=AIzaSyC7QBEyXbpXf53jPvM4lXfgXEHD5caa61A

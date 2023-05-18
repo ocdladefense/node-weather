@@ -1,7 +1,7 @@
 //What is this?
 //const regeneratorRuntime = require("regenerator-runtime");
 
-import Weather from './node_modules/@beneatspineapple/lib-weather/Weather.js';
+import Weather from './node_modules/@beneatspineapple/lib-weather/dist/Weather.js';
 
 //let coords = weather.getCoordinates("97401");
 //let forecast = weather.getSevenDayForecast("97401");

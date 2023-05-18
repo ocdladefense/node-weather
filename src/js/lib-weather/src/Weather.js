@@ -1,6 +1,6 @@
-import {getDate, getWeekday} from "../lib-date/dates.js";
-import getLocation from "../lib-google-maps/google-maps.js";
-import formatQueryString from "../lib-http/http.js";
+import {getDate, getWeekday} from "../../lib-date/src/dates.js";
+import getLocation from "../../lib-google-maps/dist/google-maps.js";
+import formatQueryString from "../../lib-http/src/http.js";
 
 
 // sample openweathermap api call
@@ -10,8 +10,8 @@ class Weather
 {
   constructor() {
     // Update three parts of the page: zipForm, weatherList, and currentDay.
-    this.weatherMapUrl = "https://api.openweathermap.org/data/2.5/onecall";
-    this.weatherMapApiKey = "3fca0a11ad63bd24761e381b964b5ae9";
+    this.weatherMapUrl = process.env.WEATHERMAP_URL;
+    this.weatherMapApiKey = process.env.WEATHERMAP_API_KEY;
     // this.form.onsubmit = this.onFormSubmit.bind(this);
     // this.onFormSubmit = this.onFormSubmit.bind(this);
     // this.getSevenDayForecast = this.getSevenDayForecast.bind(this);
@@ -44,9 +44,14 @@ class Weather
   handleEvent(event){
     event.preventDefault();
     let zipcode = document.querySelector("#zipcode").value;
-    
+    // this.test(zipcode)
+    // .then((forecast) => this.renderForecast(forecast));
+
+
     this.getSevenDayForecast(zipcode)
     .then((forecast) => this.renderForecast(forecast));
+
+    
     //.then(function(){document.getElementById("zipcode").value = "";})
     //.then(function(){document.getElementById("currentDay").innerHTML = "";})
   }
@@ -54,7 +59,8 @@ class Weather
   // Use the zipcode entered to get longitude and latitude from google api because openweathermap api requires coordinates. Fetches forecast with formatted query string. 
   async getSevenDayForecast(zipcode){
     let city = await this.getCoordinates(zipcode);
-    console.log("city " , city);
+
+    // console.log("city " , city);
     let params = {
       lat: city.lat, 
       lon: city.lng, 
@@ -62,21 +68,45 @@ class Weather
       units: "imperial",
       appid: this.weatherMapApiKey
     };
+    console.log(this.weatherMapUrl + "?" + formatQueryString(params));
     return fetch(this.weatherMapUrl + "?" + formatQueryString(params))
     .then(response => response.json())
     .then(forecast => {
-      console.warn("FORECAST: " , forecast.daily);
+      // console.warn("FORECAST: " , forecast.daily);
       let sevenDayForecast = forecast.daily;
       // Sometimes the api returns an eight day forecast.
       // Turn an eight day forecast into a seven day forecast.
       sevenDayForecast.splice(7, 1);
       this.sevenDayForecast = sevenDayForecast;
       //let timeZoneOffset = forecast.timezone_offset;
-      console.log("SDF " , sevenDayForecast);
+      // console.log("SDF " , sevenDayForecast);
       return sevenDayForecast;
     });
   }
-
+  // async test(zipcode){
+  //   let city = await this.getCoordinates(zipcode);
+  //   // console.log("city " , city);
+  //   let params = {
+  //     lat: city.lat, 
+  //     lon: city.lng, 
+  //     exclude: "minutely,hourly,current",
+  //     units: "imperial",
+  //     appid: this.weatherMapApiKey
+  //   };
+  //   return fetch(this.weatherMapUrl + "?" + formatQueryString(params))
+  //   .then(response => response.json())
+  //   .then(forecast => {
+  //     console.warn("FORECAST: " , forecast.daily);
+  //     let sevenDayForecast = forecast.daily;
+  //     // Sometimes the api returns an eight day forecast.
+  //     // Turn an eight day forecast into a seven day forecast.
+  //     sevenDayForecast.splice(7, 1);
+  //     this.sevenDayForecast = sevenDayForecast;
+  //     //let timeZoneOffset = forecast.timezone_offset;
+  //     console.log("SDF " , sevenDayForecast);
+  //     return sevenDayForecast;
+  //   });
+  // }
   renderForecast(forecast){
     let html = forecast.map(this.renderForecastDay);
     let htmlString = html.join('');
@@ -106,7 +136,7 @@ class Weather
     let index = dataset.index;
     let day = this.sevenDayForecast[index];
     let dayElem = document.getElementById("currentDay");
-    console.log("day is " , index);
+    // console.log("day is " , index);
     let html = `
       <div id="currentDay">
       <img src='http://openweathermap.org/img/wn/${day.weather[0].icon}.png'>${day.weather[0].description}<br />

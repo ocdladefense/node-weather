@@ -5,7 +5,9 @@
   "main": "index.html",
   "scripts": {
     "webpack": "webpack",
-    "build": "webpack --config webpack.config.js",
+    "build": "run-p script1 script2",
+    "script1": "./node_modules/.bin/babel node_modules/@beneatspineapple/lib-google-maps/src/google-maps.js -d node_modules/@beneatspineapple/lib-google-maps/dist",
+    "script2": "./node_modules/.bin/babel node_modules/@beneatspineapple/lib-weather/src/Weather.js -d node_modules/@beneatspineapple/lib-weather/dist",
     "watch": "webpack serve --open"
   },
   "devDependencies": {
@@ -15,6 +17,7 @@
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",
+    "npm-run-all": "^4.1.5",
     "sass": "^1.54.9",
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
@@ -25,9 +28,10 @@
   "dependencies": {
     "@beneatspineapple/lib-date": "file:src/js/lib-date",
     "@beneatspineapple/lib-google-maps": "file:src/js/lib-google-maps",
-    "@beneatspineapple/lib-weather": "file:src/js/lib-weather",
     "@beneatspineapple/lib-http": "file:src/js/lib-http",
+    "@beneatspineapple/lib-weather": "file:src/js/lib-weather",
     "babel-loader": "^8.2.5",
+    "babel-plugin-inline-dotenv": "^1.7.0",
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
     "less": "^4.1.1"
