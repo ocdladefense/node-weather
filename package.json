@@ -4,11 +4,8 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "webpack": "webpack",
-    "build": "run-p script1 script2",
-    "script1": "./node_modules/.bin/babel node_modules/@beneatspineapple/lib-google-maps/src/google-maps.js -d node_modules/@beneatspineapple/lib-google-maps/dist",
-    "script2": "./node_modules/.bin/babel node_modules/@beneatspineapple/lib-weather/src/Weather.js -d node_modules/@beneatspineapple/lib-weather/dist",
-    "watch": "webpack serve --open"
+    "build": "run-p script",
+    "script": "./node_modules/.bin/babel assets/js/src/WeatherController.js -d assets/js/dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
@@ -26,10 +23,10 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
-    "@beneatspineapple/lib-date": "file:src/js/lib-date",
-    "@beneatspineapple/lib-google-maps": "file:src/js/lib-google-maps",
-    "@beneatspineapple/lib-http": "file:src/js/lib-http",
-    "@beneatspineapple/lib-weather": "file:src/js/lib-weather",
+    "@beneatspineapple/lib-date": "file:assets/js/lib-date",
+    "@beneatspineapple/lib-google-maps": "file:assets/js/lib-google-maps",
+    "@beneatspineapple/lib-http": "file:assets/js/lib-http",
+    "@beneatspineapple/lib-weather": "file:assets/js/lib-weather",
     "babel-loader": "^8.2.5",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "bootstrap": "^5.2.1",
