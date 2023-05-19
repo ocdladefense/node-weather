@@ -22,7 +22,7 @@ class OpenWeatherApi
     return fetch(this.endPoint + "?" + formatQueryString(params))
     .then(response => response.json())
     .then(forecast => {
-      // console.warn("FORECAST: " , forecast.daily);
+      console.warn("FORECAST: " , forecast);
       let sevenDayForecast = forecast.daily;
       // Sometimes the api returns an eight day forecast.
       // Turn an eight day forecast into a seven day forecast.

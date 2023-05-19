@@ -1,4 +1,6 @@
-import {getDate, getWeekday} from "../lib-date/src/dates.js";
+/** @jsx vNode */
+import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
+import {Forecast, WeatherDetail} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js"
 
@@ -10,55 +12,45 @@ class WeatherController
   constructor() {
   }
 
-
-  async handleEvent(event){
-    event.preventDefault();
+  async handleEvent(e){
+    e.preventDefault();
+    let target = e.target;
+    let dataset = target.dataset;
+    let action = dataset.action;
+    let index = dataset.index;
     let input = document.querySelector("#zipcode").value;
+
+
+
+
+
+    if(action == "seven-day-forecast"){
+      this.sevenDayForecast(input);
+    } else if (action == "details") {
+      this.renderDetails(index);
+    } else if (action == "email") {
+
+    }
+  }
+
+  async sevenDayForecast(input){
     let googleGeoCodeApi = new GoogleGeocodeApi(process.env.GEOCODE_API_KEY);
     let location = await googleGeoCodeApi.getLocation(input);
     let openWeatherApi = new OpenWeatherApi(process.env.WEATHERMAP_API_KEY);
     this.forecast = await openWeatherApi.getSevenDayForecast(location.lat, location.lng);
-    this.renderForecast(this.forecast);
+    let vnode = <Forecast forecast={this.forecast} />;
+    let node = View.createElement(vnode);
+    document.getElementById('weatherList').appendChild(node);
   }
 
-  renderForecast(forecast){
-    let html = forecast.map(this.renderForecastDay);
-    let htmlString = html.join('');
-
-    document.getElementById('weatherList').innerHTML = htmlString;
-  }
-  
-  renderForecastDay(day, index){
-    let theDate = getDate(day.dt);
- 
-    return `
-      <div class="weather-list-item" data-index="${index}">
-        ${theDate.getMonth() + 1}/${theDate.getDate()}<br />
-        ${getWeekday(theDate)}<br />
-        ${day.temp.min} | ${day.temp.max}<br />
-      </div>
-    `;
-  }
-
-  renderForecastDayDetail(e){
-    let target = e.target;
-    let dataset = target.dataset;
-    let index = dataset.index;
+  renderDetails(index) {
     let day = this.forecast[index];
+    let vnode =  <WeatherDetail day={day} />;
+    let node = View.createElement(vnode);
+    console.log(node);
     let dayElem = document.getElementById("currentDay");
-    // console.log("day is " , index);
-    let html = `
-      <div id="currentDay">
-      <img src='http://openweathermap.org/img/wn/${day.weather[0].icon}.png'>${day.weather[0].description}<br />
-      Morning Temperature: ${day.temp.morn}<br />
-      Day Temperature: ${day.temp.day}<br />
-      Evening Temperature: ${day.temp.eve}<br />
-      Wind Speed: ${day.wind_speed}<br />
-      Humidity: ${day.humidity}
-      </div>
-    `;
-
-    dayElem.innerHTML = html;
+    dayElem.removeChild(dayElem.firstChild); 
+    dayElem.appendChild(node);
   }
 }
 

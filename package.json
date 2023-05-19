@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "build": "run-p script",
-    "script": "./node_modules/.bin/babel assets/js/src/WeatherController.js -d assets/js/dist"
+    "script": "./node_modules/.bin/babel assets/js/src -d assets/js/dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
@@ -23,10 +23,12 @@
     "webpack-dev-server": "^4.11.1"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.18.6",
     "@beneatspineapple/lib-date": "file:assets/js/lib-date",
     "@beneatspineapple/lib-google-maps": "file:assets/js/lib-google-maps",
     "@beneatspineapple/lib-http": "file:assets/js/lib-http",
     "@beneatspineapple/lib-weather": "file:assets/js/lib-weather",
+    "@ocdladefense/view": "^2.3.0",
     "babel-loader": "^8.2.5",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "bootstrap": "^5.2.1",
