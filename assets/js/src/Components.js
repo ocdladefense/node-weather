@@ -31,7 +31,7 @@ const Forecast = function(props){
             {html}
         </div>
     )
-}
+};
 
 const ForecastDay = function(props){
     let day = props.day;
@@ -47,28 +47,13 @@ const ForecastDay = function(props){
         </div>
     )
     return foobar;
-}
+};
 
-const WxMail = async function(props){
-    let recipient = props.recipient;
-    let subject = props.subject;
-    let body = props.body;
-    let data = {
-      recipient: recipient,
-      subject: subject,
-      body: body
-    };
-    let response = await fetch('/email', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-    let result = await response.text();
-    console.log(result);
-  }
+const EmailDraft = function(props){
+  
+};
 
 
 
-export {WeatherDetail, Forecast, ForecastDay, WxMail};
+
+export {WeatherDetail, Forecast, ForecastDay, EmailDraft};
