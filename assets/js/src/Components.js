@@ -43,10 +43,32 @@ const ForecastDay = function(props){
             {(theDate.getMonth() + 1) + "/" + theDate.getDate()}<br />
             {getWeekday(theDate)}<br />
             {day.temp.min + " | " + day.temp.max}<br />
-            <button data-action="email" data-index={index}>Email Forecast</button>
+            <button data-action="email" data-index={index} >Email Forecast</button>
         </div>
     )
     return foobar;
 }
 
-export {WeatherDetail, Forecast, ForecastDay};
+const WxMail = async function(props){
+    let recipient = props.recipient;
+    let subject = props.subject;
+    let body = props.body;
+    let data = {
+      recipient: recipient,
+      subject: subject,
+      body: body
+    };
+    let response = await fetch('/email', {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    let result = await response.text();
+    console.log(result);
+  }
+
+
+
+export {WeatherDetail, Forecast, ForecastDay, WxMail};

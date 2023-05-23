@@ -1,6 +1,6 @@
 /** @jsx vNode */
 import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
-import {Forecast, WeatherDetail} from "./Components.js";
+import {Forecast, WeatherDetail, WxMail} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js"
 
@@ -21,15 +21,12 @@ class WeatherController
     let input = document.querySelector("#zipcode").value;
 
 
-
-
-
     if(action == "seven-day-forecast"){
       this.sevenDayForecast(input);
     } else if (action == "details") {
       this.renderDetails(index);
     } else if (action == "email") {
-
+      this.sendWxMail();
     }
   }
 
@@ -51,6 +48,14 @@ class WeatherController
     let dayElem = document.getElementById("currentDay");
     dayElem.removeChild(dayElem.firstChild); 
     dayElem.appendChild(node);
+  }
+
+  async sendWxMail(){
+    let recipient = "mwpaulsen86@gmail.com";
+    let subject = "This is the subject";
+    let body = "this is the email body";
+
+    await WxMail(recipient, subject, body);
   }
 }
 
