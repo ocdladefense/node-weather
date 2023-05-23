@@ -1,6 +1,6 @@
 /** @jsx vNode */
 import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
-import {Forecast, WeatherDetail, WxMail} from "./Components.js";
+import {Forecast, WeatherDetail} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js"
 
@@ -10,6 +10,9 @@ import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js"
 class WeatherController
 {
   constructor() {
+    this.gApiKey = process.env.GEOCODE_API_KEY;
+    this.wApiKey = process.env.WEATHERMAP_API_KEY;
+    this.emailUrl = process.env.EMAIL_URL;
   }
 
   async handleEvent(e){
@@ -31,9 +34,9 @@ class WeatherController
   }
 
   async sevenDayForecast(input){
-    let googleGeoCodeApi = new GoogleGeocodeApi(process.env.GEOCODE_API_KEY);
+    let googleGeoCodeApi = new GoogleGeocodeApi(this.gApiKey);
     let location = await googleGeoCodeApi.getLocation(input);
-    let openWeatherApi = new OpenWeatherApi(process.env.WEATHERMAP_API_KEY);
+    let openWeatherApi = new OpenWeatherApi(this.wApiKey);
     this.forecast = await openWeatherApi.getSevenDayForecast(location.lat, location.lng);
     let vnode = <Forecast forecast={this.forecast} />;
     let node = View.createElement(vnode);
@@ -50,12 +53,33 @@ class WeatherController
     dayElem.appendChild(node);
   }
 
+
+  async  WxMail(recipient, subject, body){
+    let data = {
+      recipient: recipient,
+      subject: subject,
+      body: body
+    };
+    if(this.emailUrl == null){
+      throw new Error("You have to configure EMAIL_URL in .env");
+    }
+    let response = await fetch(this.emailUrl, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
+    let result = await response.text();
+    console.log(result);
+  }
+
   async sendWxMail(){
     let recipient = "mwpaulsen86@gmail.com";
     let subject = "This is the subject";
     let body = "this is the email body";
 
-    await WxMail(recipient, subject, body);
+    await this.WxMail(recipient, subject, body);
   }
 }
 

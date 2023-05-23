@@ -15,4 +15,4 @@ window.onload = () => {
     document.getElementById("zipForm").addEventListener("submit", weather);
     document.getElementById("weatherList").addEventListener("click", weather);
 }
-
+window.weather = weather;
