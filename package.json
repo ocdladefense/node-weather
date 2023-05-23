@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "build": "run-p script",
-    "script": "./node_modules/.bin/babel assets/js/src -d assets/js/dist"
+    "script": "npx babel assets/js/src -d assets/js/dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",

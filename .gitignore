@@ -89,6 +89,11 @@ typings/
 # dotenv environment variables file
 .env
 
+# vendor and modules directory (will be imported by running 'composer install')
+vendor/
+modules/
+
+
 
 
 # End of https://www.gitignore.io/api/node,macos
