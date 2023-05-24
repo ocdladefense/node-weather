@@ -29,6 +29,7 @@
     "@beneatspineapple/lib-http": "file:assets/js/lib-http",
     "@beneatspineapple/lib-weather": "file:assets/js/lib-weather",
     "@ocdladefense/view": "^2.3.0",
+    "@ocdladefense/modal": "file:dev_modules/node-modal",
     "babel-loader": "^8.2.5",
     "babel-plugin-inline-dotenv": "^1.7.0",
     "bootstrap": "^5.2.1",
