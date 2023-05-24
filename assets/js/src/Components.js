@@ -50,6 +50,7 @@ const ForecastDay = function(props){
 };
 
 const EmailDraft = function(props){
+  let content = props.content;
   
 };
 
