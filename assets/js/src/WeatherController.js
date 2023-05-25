@@ -40,9 +40,10 @@ class WeatherController
     this.forecast = await openWeatherApi.getSevenDayForecast(location.lat, location.lng);
     let vnode = <Forecast forecast={this.forecast} />;
     let node = View.createElement(vnode);
-    let weatherList = document.getElementById('weatherList');
-    weatherList.removeChild(weatherList.firstChild);
-    weatherList.appendChild(node);
+    node.classList.add("weather-list");
+    node.classList.add("flex-parent");
+    let forcastContainer = document.getElementById('weatherList');
+    forcastContainer.appendChild(node);
   }
 
   renderDetails(index) {
