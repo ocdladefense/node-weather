@@ -1,8 +1,9 @@
 /** @jsx vNode */
 import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
-import {Forecast, WeatherDetail} from "./Components.js";
+import {Forecast, WeatherDetail, ForecastDay, EmailDraft} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
-import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js"
+import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js";
+import { Modal, ModalComponent } from "../../../dev_modules/node-modal/dist/modal.js";
 
 // sample openweathermap api call
 //https://api.openweathermap.org/data/2.5/onecall?lat=43.9698&lon=-123.2006&exclude=minutely,hourly,current&units=imperial&appid=3fca0a11ad63bd24761e381b964b5ae9
@@ -56,6 +57,19 @@ class WeatherController
     dayElem.appendChild(node);
   }
 
+  renderModal(){
+    //let modalContent = this.forecast.map((forecastDay, index) => {return <ForecastDay day={forecastDay} index={index} />;});
+    // let vnode = <Forecast forecast={this.forecast} />;
+    // let testDiv = document.createElement("div");
+    // let node = View.createElement(vnode);
+    // let emailText = node.innerHTML;
+    // console.log(emailText);
+    // modal.renderHtml(emailText);
+    let preview = <EmailDraft forecast={this.forecast} />;
+    //let preview = new EmailDraft(this.forecast);
+    modal.show();
+    modal.render(preview);
+  }
 
   async  WxMail(recipient, subject, body){
     let data = {

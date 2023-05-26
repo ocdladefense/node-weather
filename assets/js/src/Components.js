@@ -1,6 +1,7 @@
 /** @jsx vNode */
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
 import {getDate, getWeekday} from "../lib-date/src/dates.js";
+import { Modal } from "../../../dev_modules/node-modal/dist/modal.js";
 
 const WeatherDetail = function(props) {
     let day = props.day;
@@ -38,7 +39,7 @@ const ForecastDay = function(props){
     let index = props.index;
     let theDate = getDate(day.dt);
  
-    const foobar = (
+    return (
         <div class="weather-list-item" data-action="details" data-index={index}>
             {(theDate.getMonth() + 1) + "/" + theDate.getDate()}<br />
             {getWeekday(theDate)}<br />
@@ -46,12 +47,25 @@ const ForecastDay = function(props){
             <button data-action="email" data-index={index} >Email Forecast</button>
         </div>
     )
-    return foobar;
 };
 
 const EmailDraft = function(props){
-  let content = props.content;
-  
+  let forecast = props.forecast;
+  let content = forecast.map((forecastDay, index) => {return <ForecastDay day={forecastDay} index={index} />;});
+  return (
+      <div>
+        <form>
+          <label for="recipient">Send to: </label>
+          <input type="text" id="recipient" name="recipient" />
+          <br />
+          <label for="subject" >Subject: </label>
+          <input type="text" id="subject" name="subject" />
+          <br />
+        </form>
+          {content}
+      </div>
+  )
+
 };
 
 
