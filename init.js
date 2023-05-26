@@ -1,4 +1,5 @@
 import WeatherController from './assets/js/dist/WeatherController.js';
+import { Modal } from "./dev_modules/node-modal/dist/modal.js";
 
 //What is this?
 //const regeneratorRuntime = require("regenerator-runtime");
@@ -16,3 +17,7 @@ window.onload = () => {
     document.getElementById("weatherList").addEventListener("click", weather);
 }
 window.weather = weather;
+
+//Setup modal
+let modal = new Modal();
+window.modal = modal;
