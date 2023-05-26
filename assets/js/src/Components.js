@@ -28,9 +28,9 @@ const Forecast = function(props){
     let forecast = props.forecast;
     let html = forecast.map((forecastDay, index) => {return <ForecastDay day={forecastDay} index={index} />;});
     return (
-        <div>
-            {html}
-        </div>
+      <div class="weather-list flex-parent">
+          {html}
+      </div>
     )
 };
 
@@ -44,14 +44,13 @@ const ForecastDay = function(props){
             {(theDate.getMonth() + 1) + "/" + theDate.getDate()}<br />
             {getWeekday(theDate)}<br />
             {day.temp.min + " | " + day.temp.max}<br />
-            <button data-action="email" data-index={index} >Email Forecast</button>
+            {/* <button data-action="email" data-index={index} >Email Forecast</button> */}
         </div>
     )
 };
 
 const EmailDraft = function(props){
-  let forecast = props.forecast;
-  let content = forecast.map((forecastDay, index) => {return <ForecastDay day={forecastDay} index={index} />;});
+  let content = props.content;
   return (
       <div>
         <form>
@@ -61,8 +60,11 @@ const EmailDraft = function(props){
           <label for="subject" >Subject: </label>
           <input type="text" id="subject" name="subject" />
           <br />
+          <button type="submit" data-action="send-forecast">Send Forecast</button>
         </form>
-          {content}
+          <div id="body">
+            {content}
+          </div>
       </div>
   )
 
