@@ -13,8 +13,8 @@ import { Modal } from "./dev_modules/node-modal/dist/modal.js";
 let weather = new WeatherController();
 
 window.onload = () => {
-    document.getElementById("zipForm").addEventListener("submit", weather);
-    document.getElementById("weatherList").addEventListener("click", weather);
+    //document.getElementById("zipForm").addEventListener("submit", weather);
+    document.addEventListener("click", weather);
 }
 window.weather = weather;
 
