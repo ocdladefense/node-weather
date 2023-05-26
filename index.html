@@ -13,18 +13,21 @@
           <div class="zip-form">
               <form id="zipForm" data-action="seven-day-forecast">
                   <div class="flex-parent">
-                    <label for="zipcode">Zip</label>
+                    <label for="user-input">Zip or City/State</label>
                     <input class="form-control"
-                        type="text" id="zipcode" name="zipcode" 
+                        type="text" id="user-input" name="user-input" 
                         value="" required
                     />
-                    <button type="submit" class="btn btn-success"> Get the forecast!</button>
+                    <button type="submit" class="btn btn-success" data-action="seven-day-forecast">Get the forecast!</button>
+                    <button type="submit" class="ml-2" data-action="preview-forecast">Email Forecast</button>
                 </div>
               </form>
           </div>
+          <div id="emailFormContainer" class="text-center">
 
+          </div>
           <!-- <div id="weatherList" class="weather-list flex-parent"> -->
-            <div id="weatherList">
+          <div id="weatherList">
           </div>
           <div id="currentDay" class="weather-list-items current-day">
 
