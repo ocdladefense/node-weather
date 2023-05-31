@@ -2,6 +2,7 @@
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
 import {dayOfMonth, getDate, dayOfWeek, monthNumber} from "../lib-date/src/dates.js";
 import { Modal } from "../../../dev_modules/node-modal/dist/modal.js";
+import {morningTemp, dayTemp, eveningTemp, windSpeed} from "../lib-weather/src/OpenWeatherApi.js"
 
 
 const Forecast = function(props){
