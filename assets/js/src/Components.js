@@ -2,7 +2,7 @@
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
 import {dayOfMonth, getDate, dayOfWeek, monthNumber} from "../lib-date/src/dates.js";
 import { Modal } from "../../../dev_modules/node-modal/dist/modal.js";
-import {morningTemp, dayTemp, eveningTemp, windSpeed} from "../lib-weather/src/OpenWeatherApi.js"
+import {minTemp, maxTemp, morningTemp, dayTemp, eveningTemp, windSpeed} from "../lib-weather/src/numbers.js"
 
 
 const Forecast = function(props){
@@ -36,7 +36,7 @@ const Forecast = function(props){
             {monthNumber(theDate) + "/" + dayOfMonth(theDate)}<br />
             <img src={iconUrl} data-action="details" data-index={index} /> <br />
             {dayOfWeek(theDate)}<br />
-            {Math.round(day.temp.min) + " | " + Math.round(day.temp.max)}<br />
+            {minTemp(day) + " | " + maxTemp(day)}<br />
         </div>
     )
 };
@@ -58,10 +58,10 @@ const ForecastDayDetail = function(props) {
         <div class="details">
             <img src={iconUrl} />
             {report.description}<br />
-            {"Morning Temperature: " + temp.morn}<br />
-            {"Day Temperature: " + temp.day}<br />
-            {"Evening Temperature:  " + temp.eve}<br />
-            {"Wind Speed: " + day.wind_speed}<br />
+            {"Morning Temperature: " + morningTemp(day)}<br />
+            {"Day Temperature: " + dayTemp(day)}<br />
+            {"Evening Temperature:  " + eveningTemp(day)}<br />
+            {"Wind Speed: " + windSpeed(day)}<br />
             {"Humidity: " + day.humidity}
         </div>
     )

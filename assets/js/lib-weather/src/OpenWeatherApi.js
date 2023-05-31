@@ -37,18 +37,3 @@ class OpenWeatherApi
 
 export default OpenWeatherApi;
 
-export function morningTemp(temp){
-  return Math.round(temp);
-}
-
-export function dayTemp(temp){
-  return Math.round(temp);
-}
-
-export function eveningTemp(temp){
-  return Math.round(temp);
-}
-
-export function windSpeed(speed){
-  return Math.round(speed);
-}
