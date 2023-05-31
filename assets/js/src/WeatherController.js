@@ -1,6 +1,6 @@
 /** @jsx vNode */
 import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
-import {Forecast, WeatherDetail, EmailDraft} from "./Components.js";
+import {Forecast, ForecastDayDetail, EmailDraft} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js";
 import { Modal, ModalComponent } from "../../../dev_modules/node-modal/dist/modal.js";
@@ -19,13 +19,21 @@ class WeatherController
   }
 
   async handleEvent(e){
-    e.preventDefault();
-    console.log(e.type);
     let target = e.target;
     let dataset = target.dataset;
     let action = dataset.action;
+    let actionArray = ["seven-day-forecast", "details", "preview-forecast", "send-forecast"];
+    if (!actionArray.includes(action)){
+      return false;
+    }
+    e.preventDefault();
+    console.log(e.type);
     let index = dataset.index; //Only applicable when showing weather details for given day.
     let input = document.querySelector("#user-input").value;
+
+    // if ("modal-backdrop" == target.id || "close-modal" == target.id) {
+    //   modal.hide();
+    // }
 
 
     if(action == "seven-day-forecast"){
@@ -49,6 +57,9 @@ class WeatherController
     let openWeatherApi = new OpenWeatherApi(this.wApiKey);
     this.forecast = await openWeatherApi.getSevenDayForecast(location.lat, location.lng);
 
+    
+
+
     let vnode = <Forecast forecast={this.forecast} />;
     let node = View.createElement(vnode);
     // node.classList.add("weather-list");
@@ -65,7 +76,8 @@ class WeatherController
 
   renderDetails(index) {
     let day = this.forecast[index];
-    let vnode =  <WeatherDetail day={day} />;
+    let iconUrl = "http://openweathermap.org/img/wn/";
+    let vnode =  <ForecastDayDetail day={day} url={iconUrl} size="large"/>;
     let node = View.createElement(vnode);
     console.log(node);
     let dayElem = document.getElementById("currentDay");
@@ -77,15 +89,25 @@ class WeatherController
     let vnode = <Forecast forecast={this.forecast} />;
 
     let email = <EmailDraft content={vnode} />;
-    let node = View.createElement(email);
-    document.body.appendChild(node);
+    //let node = View.createElement(email);
+    //document.body.appendChild(node);
+    modal.render(email);
+    modal.show();
+    Modal.prototype.helloWorld = function(){
+      window.alert("Hello World!");
+    };
+    Modal.foobar = "baz";
+    
+    modal.helloWorld();
   }
 
   async sendForecast(){
     let weatherList = document.getElementById("weatherList");    
     let content = weatherList.innerHTML;
+    let recipient = document.getElementById("recipient").value;
+    let subject = document.getElementById("subject").value ||"Hahaha it's still raining in Oregon";
     console.log("Content was: " + content);
-    await this.WxMail("mwpaulsen86@gmail.com", "Test wx mail", content);
+    await this.WxMail(recipient, subject, content);
   }
 
   async  WxMail(recipient, subject, body){
