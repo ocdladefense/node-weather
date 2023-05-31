@@ -12,8 +12,16 @@ export function getDate(unixTimestamp, timezoneOffset) {
 }
 
 // returns a string that represents the day of the week based on a JS date object
-export function getWeekday(date) {
+export function dayOfWeek(date) {
     const dayNames = ['Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const weekday = date.getDay();
     return dayNames[weekday];
+}
+
+export function dayOfMonth(date){
+    return date.getDate();
+}
+
+export function monthNumber(date){
+    return date.getMonth() + 1;
 }

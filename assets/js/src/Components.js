@@ -1,6 +1,6 @@
 /** @jsx vNode */
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
-import {getDate, getWeekday} from "../lib-date/src/dates.js";
+import {dayOfMonth, getDate, dayOfWeek, monthNumber} from "../lib-date/src/dates.js";
 import { Modal } from "../../../dev_modules/node-modal/dist/modal.js";
 
 
@@ -32,11 +32,10 @@ const Forecast = function(props){
  
     return (
         <div class="weather-list-item" data-action="details" data-index={index}>
-            {(theDate.getMonth() + 1) + "/" + theDate.getDate()}<br />
+            {monthNumber(theDate) + "/" + dayOfMonth(theDate)}<br />
             <img src={iconUrl} data-action="details" data-index={index} /> <br />
-            {getWeekday(theDate)}<br />
+            {dayOfWeek(theDate)}<br />
             {Math.round(day.temp.min) + " | " + Math.round(day.temp.max)}<br />
-            {/* <button data-action="email" data-index={index} >Email Forecast</button> */}
         </div>
     )
 };
