@@ -44,7 +44,8 @@ const Forecast = function(props){
 const ForecastDayDetail = function(props) {
     let day = props.day;
     let url = props.url;
-    let size = props.size
+    let theDate = getDate(day.dt);
+    let size = props.size;
     let report = day.weather[0]; // The weather report; like you'd hear on the radio.
     let temp = day.temp;
     let sizeObject = {
@@ -56,8 +57,11 @@ const ForecastDayDetail = function(props) {
   
     const foobar = (
         <div class="details">
-            <img src={iconUrl} />
-            {report.description}<br />
+            <div class="text-center">
+              <h3>{dayOfWeek(theDate)}</h3>
+              <b>{report.description}</b><br />
+              <img src={iconUrl} /> <br />
+            </div>
             {"Morning Temperature: " + morningTemp(day)}<br />
             {"Day Temperature: " + dayTemp(day)}<br />
             {"Evening Temperature:  " + eveningTemp(day)}<br />
