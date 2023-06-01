@@ -4,6 +4,7 @@ import {Forecast, ForecastDayDetail, EmailDraft} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js";
 import { Modal, ModalComponent } from "../../../dev_modules/node-modal/dist/modal.js";
+import DayForecast from "../lib-weather/src/DayForecast.js";
 
 window.EmailDraft = EmailDraft;
 window.View = View;

@@ -2,13 +2,14 @@
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
 import {dayOfMonth, getDate, dayOfWeek, monthNumber} from "../lib-date/src/dates.js";
 import { Modal } from "../../../dev_modules/node-modal/dist/modal.js";
-import {minTemp, maxTemp, morningTemp, dayTemp, eveningTemp, windSpeed} from "../lib-weather/src/numbers.js"
+import {minTemp, maxTemp, morningTemp, dayTemp, eveningTemp, windSpeed} from "../lib-weather/src/numbers.js";
+
 
 
 const Forecast = function(props){
   let forecast = props.forecast;
   let iconUrl = "http://openweathermap.org/img/wn/";
-  let html = forecast.map((forecastDay, index) => {return <ForecastDay day={forecastDay} index={index} url={iconUrl} size="medium" />;});
+  let html = forecast.map((forecastDay, index) => {return <DayForecast day={forecastDay} index={index} url={iconUrl} size="medium" details={false} />;});
     return (
       <div class="weather-list flex-parent">
           {html}
@@ -72,6 +73,42 @@ const ForecastDayDetail = function(props) {
     console.log(foobar);
     return foobar;
   };
+
+const DayForecast = function(props){
+  let day = props.day;
+  let details = props.details;
+
+  let url = props.url;
+  let theDate = getDate(day.dt);
+  let size = props.size;
+  let report = day.weather[0]; // The weather report; like you'd hear on the radio.
+  let temp = day.temp;
+  let sizeObject = {
+    small: ".png",
+    medium: "@2x.png",
+    large: "@4x.png"
+  };
+  let iconUrl = url + report.icon + sizeObject[size];
+
+  if(details){
+    const foobar = (
+      <div class="details">
+          <div class="text-center">
+            <h3>{dayOfWeek(theDate)}</h3>
+            <b>{report.description}</b><br />
+            <img src={iconUrl} /> <br />
+          </div>
+          {"Morning Temperature: " + morningTemp(day)}<br />
+          {"Day Temperature: " + dayTemp(day)}<br />
+          {"Evening Temperature:  " + eveningTemp(day)}<br />
+          {"Wind Speed: " + windSpeed(day)}<br />
+          {"Humidity: " + day.humidity}
+      </div>
+  )
+  console.log(foobar);
+  return foobar;
+  }
+}
 
 const EmailDraft = function(props){
   let content = props.content;
