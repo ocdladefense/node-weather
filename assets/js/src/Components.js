@@ -1,114 +1,103 @@
 /** @jsx vNode */
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
-import {dayOfMonth, getDate, dayOfWeek, monthNumber} from "../lib-date/src/dates.js";
-import { Modal } from "../../../dev_modules/node-modal/dist/modal.js";
-import {minTemp, maxTemp, morningTemp, dayTemp, eveningTemp, windSpeed} from "../lib-weather/src/numbers.js";
+import {FriendlyDate} from "../lib-date/src/FriendlyDate.js";
+import {DayForecast} from "../lib-weather/src/DayForecast.js";
 
 
 
 const Forecast = function(props){
   let forecast = props.forecast;
-  let iconUrl = "http://openweathermap.org/img/wn/";
-  let html = forecast.map((forecastDay, index) => {return <DayForecast day={forecastDay} index={index} url={iconUrl} size="medium" details={false} />;});
+
+  let html = forecast.map((forecastDay, index) => {return <DayForecast day={forecastDay} index={index}  icon-size="medium" details={false} />;});
     return (
       <div class="weather-list flex-parent">
           {html}
       </div>
     )
   };
-  
-  const ForecastDay = function(props){
-    let day = props.day;
-    let index = props.index;
-    let theDate = getDate(day.dt);
-    let url = props.url;
-    let size = props.size
-    let report = day.weather[0]; // The weather report; like you'd hear on the radio.
 
-    let sizeObject = {
-      small: ".png",
-      medium: "@2x.png",
-      large: "@4x.png"
-    };
-    let iconUrl = url + report.icon + sizeObject[size];
+
+
+const DayForecast = function (props) {
+  let day = new DayForecast(props.day);
+  let theDate = FriendlyDate.newFromUnixTimestamp(day.getTimestamp());
+  let index = props.index;
+    // Whether to display additional details for the day's forecast.
+  let details = props.details;
+  let size = props.size;
+
+  return details ? <ForecastDayDetail day={day} date={theDate} index={index} /> : <ForecastDaySimple day={day} date={theDate} index={index} />;
+}
+
+
+  
+  const ForecastDaySimple = function(props){
+
+    let day = props.day;
+    let theDate = props.date;
+    let report = day.getWeatherReport();
  
     return (
         <div class="weather-list-item" data-action="details" data-index={index}>
-            {monthNumber(theDate) + "/" + dayOfMonth(theDate)}<br />
-            <img src={iconUrl} data-action="details" data-index={index} /> <br />
-            {dayOfWeek(theDate)}<br />
-            {minTemp(day) + " | " + maxTemp(day)}<br />
+            {theDate.monthNumber() + "/" + theDate.dayOfMonth()}<br />
+            <ForecastIcon icon={report.icon} size="medium" index={index} />
+            {theDate.dayOfWeek()}<br />
+            {day.getLowTemp() + " | " + day.getHighTemp()}<br />
         </div>
     )
 };
 
 const ForecastDayDetail = function(props) {
-    let day = props.day;
-    let url = props.url;
-    let theDate = getDate(day.dt);
-    let size = props.size;
-    let report = day.weather[0]; // The weather report; like you'd hear on the radio.
-    let temp = day.temp;
-    let sizeObject = {
-      small: ".png",
-      medium: "@2x.png",
-      large: "@4x.png"
-    };
-    let iconUrl = url + report.icon + sizeObject[size];
-  
+  let day = props.day;
+  let theDate = props.date;
+  let description = day.getWeatherReport();
+  let icon = day.getIcon();
+
     const foobar = (
         <div class="details">
             <div class="text-center">
-              <h3>{dayOfWeek(theDate)}</h3>
-              <b>{report.description}</b><br />
-              <img src={iconUrl} /> <br />
+              <h3>{theDate.dayOfWeek()}</h3>
+              <b>{description}</b><br />
+            <ForecastIcon icon={icon} size="large" index={index} />
             </div>
-            {"Morning Temperature: " + morningTemp(day)}<br />
-            {"Day Temperature: " + dayTemp(day)}<br />
-            {"Evening Temperature:  " + eveningTemp(day)}<br />
-            {"Wind Speed: " + windSpeed(day)}<br />
-            {"Humidity: " + day.humidity}
+            {"Morning Temperature: " + day.morningTemp()}<br />
+            {"Afternoon Temperature: " + day.afternoonTemp()}<br />
+            {"Evening Temperature:  " + day.eveningTemp()}<br />
+            {"Wind Speed: " + day.windSpeed()}<br />
+            {"Humidity: " + day.humidity()}
         </div>
     )
     console.log(foobar);
     return foobar;
   };
 
-const DayForecast = function(props){
-  let day = props.day;
-  let details = props.details;
 
-  let url = props.url;
-  let theDate = getDate(day.dt);
-  let size = props.size;
-  let report = day.weather[0]; // The weather report; like you'd hear on the radio.
-  let temp = day.temp;
-  let sizeObject = {
-    small: ".png",
-    medium: "@2x.png",
-    large: "@4x.png"
-  };
-  let iconUrl = url + report.icon + sizeObject[size];
+  const ForecastIcon = function(props) {
+    let url = "http://openweathermap.org/img/wn";
+    let icon = props.icon;
+    let size = props.size;
+    let index = props.index;
 
-  if(details){
-    const foobar = (
-      <div class="details">
-          <div class="text-center">
-            <h3>{dayOfWeek(theDate)}</h3>
-            <b>{report.description}</b><br />
-            <img src={iconUrl} /> <br />
-          </div>
-          {"Morning Temperature: " + morningTemp(day)}<br />
-          {"Day Temperature: " + dayTemp(day)}<br />
-          {"Evening Temperature:  " + eveningTemp(day)}<br />
-          {"Wind Speed: " + windSpeed(day)}<br />
-          {"Humidity: " + day.humidity}
-      </div>
-  )
-  console.log(foobar);
-  return foobar;
+    const sizeObject = {
+      small: "",
+      medium: "@2x",
+      large: "@4x"
+    };
+
+    function getImageFilename(icon, size) {
+      return icon + sizeObject[size] + ".png";
   }
-}
+
+    let iconUrl = url + "/" + getImageFilename(icon,size);
+    
+    return (
+      <span>
+        <img src={iconUrl} data-action="show-details" data-index={index} />
+      </span>
+    )
+  };
+
+
 
 const EmailDraft = function(props){
   let content = props.content;
