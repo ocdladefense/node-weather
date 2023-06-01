@@ -3,13 +3,16 @@ import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
 import {Forecast, ForecastDayDetail, EmailDraft} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js";
+<<<<<<< Updated upstream
 import { Modal, ModalComponent } from "../../../dev_modules/node-modal/dist/modal.js";
 import DayForecast from "../lib-weather/src/DayForecast.js";
+=======
+import { Modal } from "../../../node_modules/@ocdladefense/node-modal/dist/modal.js";
+>>>>>>> Stashed changes
 
 window.EmailDraft = EmailDraft;
 window.View = View;
-// sample openweathermap api call
-//https://api.openweathermap.org/data/2.5/onecall?lat=43.9698&lon=-123.2006&exclude=minutely,hourly,current&units=imperial&appid=3fca0a11ad63bd24761e381b964b5ae9
+
 
 class WeatherController
 {
@@ -32,10 +35,6 @@ class WeatherController
     let index = dataset.index; //Only applicable when showing weather details for given day.
     let input = document.querySelector("#user-input").value;
 
-    // if ("modal-backdrop" == target.id || "close-modal" == target.id) {
-    //   modal.hide();
-    // }
-
 
     if(action == "seven-day-forecast"){
       this.sevenDayForecast(input);
@@ -51,12 +50,12 @@ class WeatherController
 
   }
 
-  async sevenDayForecast(input){
-    let googleGeoCodeApi = new GoogleGeocodeApi(this.gApiKey);
-    let location = await googleGeoCodeApi.getLocation(input);
+  async sevenDayForecast(input, numDays) {
+    let geo = new GoogleGeocodeApi(this.gApiKey);
+    let location = await geo.getLocation(input);
 
-    let openWeatherApi = new OpenWeatherApi(this.wApiKey);
-    this.forecast = await openWeatherApi.getSevenDayForecast(location.lat, location.lng);
+    let api = new OpenWeatherApi(this.wApiKey);
+    this.forecast = await api.getForecast(location.lat, location.lng);
 
     
 
@@ -67,12 +66,6 @@ class WeatherController
     // node.classList.add("flex-parent");
     let forcastContainer = document.getElementById('weatherList');
     forcastContainer.appendChild(node);
-
-    // let emailContainer = document.getElementById("emailFormContainer");
-    // let emailButton = document.createElement("button");
-    // emailButton.innerHTML = "Email Forecast";
-    // emailButton.setAttribute("data-action", "email");
-    // emailContainer.appendChild(emailButton);
   }
 
   renderDetails(index) {
@@ -90,16 +83,9 @@ class WeatherController
     let vnode = <Forecast forecast={this.forecast} />;
 
     let email = <EmailDraft content={vnode} />;
-    //let node = View.createElement(email);
-    //document.body.appendChild(node);
+
     modal.render(email);
     modal.show();
-    Modal.prototype.helloWorld = function(){
-      window.alert("Hello World!");
-    };
-    Modal.foobar = "baz";
-    
-    modal.helloWorld();
   }
 
   async sendForecast(){
