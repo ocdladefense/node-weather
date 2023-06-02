@@ -1,14 +1,14 @@
 /** @jsx vNode */
 import {vNode} from "../../../node_modules/@ocdladefense/view/view.js";
-import {FriendlyDate} from "../lib-date/src/FriendlyDate.js";
-import {DayForecast} from "../lib-weather/src/DayForecast.js";
+import FriendlyDate from "../lib-date/src/FriendlyDate.js";
+import DayWeatherInfo from "../lib-weather/src/DayWeatherInfo.js";
 
 
 
 const Forecast = function(props){
   let forecast = props.forecast;
 
-  let html = forecast.map((forecastDay, index) => {return <DayForecast day={forecastDay} index={index}  icon-size="medium" details={false} />;});
+  let html = forecast.map((forecastDay, index) => {return <DayForecast day={forecastDay} index={index}  details={false} />;});
     return (
       <div class="weather-list flex-parent">
           {html}
@@ -19,8 +19,8 @@ const Forecast = function(props){
 
 
 const DayForecast = function (props) {
-  let day = new DayForecast(props.day);
-  let theDate = FriendlyDate.newFromUnixTimestamp(day.getTimestamp());
+  let day = new DayWeatherInfo(props.day);
+  let theDate = FriendlyDate.newFromUnixTimestamp(day.timestamp());
   let index = props.index;
     // Whether to display additional details for the day's forecast.
   let details = props.details;
@@ -35,14 +35,14 @@ const DayForecast = function (props) {
 
     let day = props.day;
     let theDate = props.date;
-    let report = day.getWeatherReport();
+    let index = props.index;
  
     return (
-        <div class="weather-list-item" data-action="details" data-index={index}>
+        <div class="weather-list-item" data-action="details" data-index={index} style="border: 2px solid black; border-radius: 20px; display: inline-block; padding: 10px; margin: 10px; min-width: 100px; text-align: center;">
             {theDate.monthNumber() + "/" + theDate.dayOfMonth()}<br />
-            <ForecastIcon icon={report.icon} size="medium" index={index} />
+            <ForecastIcon icon={day.icon()} size="medium" index={index} />
             {theDate.dayOfWeek()}<br />
-            {day.getLowTemp() + " | " + day.getHighTemp()}<br />
+            {day.lowTemp() + " | " + day.highTemp()}<br />
         </div>
     )
 };
@@ -50,8 +50,9 @@ const DayForecast = function (props) {
 const ForecastDayDetail = function(props) {
   let day = props.day;
   let theDate = props.date;
-  let description = day.getWeatherReport();
-  let icon = day.getIcon();
+  let index = props.index;
+  let description = day.weatherReport();
+  let icon = day.icon();
 
     const foobar = (
         <div class="details">
@@ -92,7 +93,7 @@ const ForecastDayDetail = function(props) {
     
     return (
       <span>
-        <img src={iconUrl} data-action="show-details" data-index={index} />
+        <img src={iconUrl} data-action="details" data-index={index} />
       </span>
     )
   };
@@ -104,4 +105,4 @@ const ForecastDayDetail = function(props) {
 
 
 
-export {ForecastDayDetail, Forecast, ForecastDaySimple, ForecastDayDetail};
+export {Forecast, ForecastDaySimple, ForecastDayDetail, DayForecast};

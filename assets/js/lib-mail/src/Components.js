@@ -1,5 +1,5 @@
 /** @jsx vNode */
-import {vNode} from "@ocdladefense/view";
+import {vNode} from "../../../../node_modules/@ocdladefense/view/view.js";
 
 
 

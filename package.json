@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "build": "run-p script",
-    "script": "npx babel assets/js/src -d assets/js/dist"
+    "build": "run-p script script2",
+    "script": "npx babel assets/js/src -d assets/js/dist",
+    "script2": "npx babel assets/js/lib-mail/src -d assets/js/lib-mail/dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",

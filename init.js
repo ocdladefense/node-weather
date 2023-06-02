@@ -1,6 +1,6 @@
 import WeatherController from './assets/js/dist/WeatherController.js';
 import { Modal } from "./dev_modules/node-modal/dist/modal.js";
-import DayForecast from './assets/js/lib-weather/src/DayForecast.js';
+import DayWeatherInfo from './assets/js/lib-weather/src/DayWeatherInfo.js';
 
 //What is this?
 //const regeneratorRuntime = require("regenerator-runtime");
@@ -23,5 +23,5 @@ window.weather = weather;
 let modal = new Modal();
 window.modal = modal;
 
-let dayForecast = new DayForecast();
-window.dayForecast = dayForecast;
+let dayWeatherInfo = new DayWeatherInfo();
+window.dayWeatherInfo = dayWeatherInfo;

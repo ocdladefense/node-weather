@@ -40,7 +40,7 @@ class OpenWeatherApi
       units: "imperial",
       appid: this.apiKey
     };
-
+    let DEFAULT_FORECAST_DAYS = 7; //It seems like the static DEFAULT_FORECAST_DAYS was not in scope here?
     numDays = numDays || DEFAULT_FORECAST_DAYS;
     
     return fetch(this.endPoint + "?" + formatQueryString(params))

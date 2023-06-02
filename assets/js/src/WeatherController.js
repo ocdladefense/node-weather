@@ -1,9 +1,11 @@
 /** @jsx vNode */
 import {vNode,View} from "../../../node_modules/@ocdladefense/view/view.js";
-import {Forecast, ForecastDayDetail, ForecastDaySimple} from "./Components.js";
+import {Forecast, DayForecast} from "./Components.js";
 import GoogleGeocodeApi from "../lib-google-maps/src/GoogleGeocodeApi.js";
 import OpenWeatherApi from "../lib-weather/src/OpenWeatherApi.js";
-import Mailer from "../lib-mail/src/Mail.js"
+import Mailer from "../lib-mail/dist/Mail.js"
+import DayWeatherInfo from "../lib-weather/src/DayWeatherInfo.js";
+import { EmailDraft } from "../lib-mail/dist/Components.js";
 
 window.EmailDraft = EmailDraft;
 window.View = View;
@@ -14,7 +16,7 @@ class WeatherController
   constructor() {
     this.gApiKey = process.env.GEOCODE_API_KEY;
     this.wApiKey = process.env.WEATHERMAP_API_KEY;
-    this.emailUrl = process.env.EMAIL_URL;
+    
   }
 
   async handleEvent(e){
@@ -50,7 +52,7 @@ class WeatherController
     let location = await geo.getLocation(input);
 
     let api = new OpenWeatherApi(this.wApiKey);
-    this.forecast = await api.getForecast(location.lat, location.lng);
+    this.forecast = await api.getDailyForecast(location.lat, location.lng);
 
     let vnode = <Forecast forecast={this.forecast} />;
     let node = View.createElement(vnode);
@@ -60,8 +62,7 @@ class WeatherController
 
   renderDetails(index) {
     let day = this.forecast[index];
-    let iconUrl = "http://openweathermap.org/img/wn/";
-    let vnode =  <ForecastDayDetail day={day} url={iconUrl} size="large"/>;
+    let vnode = <DayForecast day={day} details={true} index={index} />
     let node = View.createElement(vnode);
     console.log(node);
     let dayElem = document.getElementById("currentDay");

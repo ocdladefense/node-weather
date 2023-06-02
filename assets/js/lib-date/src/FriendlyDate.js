@@ -2,7 +2,7 @@
 
 const MILLISECONDS = 1000;
 
-export default FriendlyDate;
+
 
 
 class FriendlyDate {
@@ -22,7 +22,7 @@ class FriendlyDate {
     // returns a string that represents the day of the week based on a JS date object
     dayOfWeek() {
         const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const weekday = date.getDay();
+        const weekday = this.date.getDay();
         return dayNames[weekday];
     }
 
@@ -46,3 +46,4 @@ class FriendlyDate {
 
 }
 
+export default FriendlyDate;

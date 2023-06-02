@@ -1,9 +1,9 @@
 //import { getDate } from "../../lib-date/src/dates";
 
-export default DayForecast;
 
 
-class DayForecast
+
+class DayWeatherInfo
 {
     constructor(day) {
         this.day = day;
@@ -20,43 +20,49 @@ class DayForecast
     }
 
 
-    getIcon() {
-
-
+    icon() {
+        return this.day.weather[0].icon;
     }
-    getTimestamp() {
+    timestamp() {
         return this.day.dt;
     }
 
     // has at least .description and .icon
-    getWeatherReport() {
+    weatherReport() {
         return this.day.weather[0];
     }
 
-    getLowTemp(units) {
+    lowTemp(units) {
         return Math.round(this.day.temp.min);
     }
 
-    getHighTemp() {
+    highTemp() {
         return Math.round(this.day.temp.max);
     }
 
-    getMorningTemp() {
-
+    morningTemp() {
+        return Math.round(this.day.temp.morn);
     }
 
-    getAfternoonTemp() {
-
+    afternoonTemp() {
+        return Math.round(this.day.temp.day);
     }
 
 
-    getEveningTemp() {
-
+    eveningTemp() {
+        return Math.round(this.day.temp.eve);
     }
 
+    windSpeed(){
+        return  Math.round(this.day.wind_speed);
+    }
+    humidity(){
+        return this.day.humidity;
+    }
     static newFromUnits(metric, imperial, kelvin) {
         
     }
 
 }
 
+export default DayWeatherInfo;

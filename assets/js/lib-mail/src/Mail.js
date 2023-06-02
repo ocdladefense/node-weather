@@ -1,9 +1,7 @@
-export {Mailer};
-
-
-
 class Mailer {
-
+  constructor(){
+    this.emailUrl = process.env.EMAIL_URL;
+  }
   async  WxMail(recipient, subject, body){
     let data = {
       recipient: recipient,
@@ -34,3 +32,4 @@ class Mailer {
 
 }
 
+export default Mailer;
