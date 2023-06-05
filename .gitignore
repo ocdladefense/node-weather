@@ -94,7 +94,5 @@ vendor/
 modules/
 
 # ignore dev_modules directory
-dev_modules/
-
 
 # End of https://www.gitignore.io/api/node,macos
